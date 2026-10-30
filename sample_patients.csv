@@ -1,0 +1,7 @@
+Patient_ID,Name,Age,Gender,Phone,Blood_Group,Department,Priority,Risk_Score
+P1001,Aarav Mehta,58,Male,9876501001,B+,Cardiology,Critical,94
+P1002,Meera Sharma,34,Female,9876501002,O+,Neurology,High,81
+P1003,Kabir Verma,26,Male,9876501003,A+,Orthopedics,Medium,55
+P1004,Saanvi Gupta,9,Female,9876501004,AB+,Pediatrics,Medium,62
+P1005,Vihaan Singh,42,Male,9876501005,O-,Dermatology,Low,31
+P1006,Ananya Joshi,67,Female,9876501006,A-,General Medicine,High,78

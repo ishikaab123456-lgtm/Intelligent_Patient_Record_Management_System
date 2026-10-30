@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="Academic patient record management and DSA demonstration system">
+  <title>MediRecord | Patient Record Management</title>
+  <link rel="stylesheet" href="/static/assets/style.css">
+</head>
+<body>
+  <section id="loginScreen" class="login-screen">
+    <div class="login-brand">
+      <div class="brand-mark large">MR</div>
+      <p class="eyebrow">ACADEMIC PROJECT</p>
+      <h1>Care records, clearly connected.</h1>
+      <p class="login-copy">A practical hospital workspace for patient records, care queues, staff assignment and transparent algorithm demonstrations.</p>
+      <div class="feature-row">
+        <span>Fast record retrieval</span><span>Priority-based care</span><span>Responsible assistance</span>
+      </div>
+    </div>
+    <div class="login-panel">
+      <form id="loginForm" class="login-card">
+        <div class="mobile-brand"><div class="brand-mark">MR</div><b>MediRecord</b></div>
+        <p class="eyebrow">WELCOME BACK</p>
+        <h2>Sign in to the workspace</h2>
+        <label>Role<select id="loginRole"><option value="admin">Admin</option><option value="doctor">Doctor</option><option value="receptionist">Receptionist</option></select></label>
+        <label>Username<input id="loginUsername" autocomplete="username" value="admin" required></label>
+        <label>Password<input id="loginPassword" type="password" autocomplete="current-password" value="admin123" required></label>
+        <p id="loginError" class="form-error" role="alert"></p>
+        <button class="btn primary wide" type="submit">Sign in</button>
+        <div class="demo-box"><b>Demo accounts</b><span>admin / admin123</span><span>doctor / doctor123</span><span>reception / reception123</span></div>
+      </form>
+    </div>
+  </section>
+
+  <div id="appShell" class="app-shell hidden">
+    <aside class="sidebar">
+      <div class="sidebar-brand"><div class="brand-mark">MR</div><div><b>MediRecord</b><small>Hospital workspace</small></div></div>
+      <nav id="sideNav" aria-label="Main navigation">
+        <button class="nav-item active" data-page="dashboard"><span>01</span>Overview</button>
+        <button class="nav-item" data-page="patients"><span>02</span>Patient records</button>
+        <button class="nav-item" data-page="assessment"><span>03</span>Care assessment</button>
+        <button class="nav-item" data-page="queue"><span>04</span>Emergency queue</button>
+        <button class="nav-item" data-page="doctors"><span>05</span>Doctors</button>
+        <button class="nav-item" data-page="appointments"><span>06</span>Appointments</button>
+        <button class="nav-item" data-page="relationships"><span>07</span>Relationship map</button>
+        <button class="nav-item" data-page="resources"><span>08</span>Resources</button>
+        <button class="nav-item" data-page="indexing"><span>09</span>Patient index</button>
+        <button class="nav-item" data-page="algorithms"><span>10</span>Performance lab</button>
+      </nav>
+      <div class="sidebar-note"><span class="status-dot"></span><div><b>Demo system online</b><small>Fictional data only</small></div></div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <button id="menuButton" class="icon-btn menu-btn" aria-label="Open navigation">☰</button>
+        <div><p class="eyebrow" id="pageEyebrow">HOSPITAL OPERATIONS</p><h2 id="pageTitle">Good morning, Admin</h2></div>
+        <div class="top-actions"><button class="icon-btn" id="notificationBtn" aria-label="Notifications">●</button><div class="user-chip"><span id="userInitials">AD</span><div><b id="currentUser">Administrator</b><small id="currentRole">Admin access</small></div></div><button id="logoutButton" class="btn ghost">Log out</button></div>
+      </header>
+
+      <div class="content">
+        <section class="page active" id="page-dashboard">
+          <div class="notice"><div><b>Hospital snapshot</b><span>Figures update automatically when records change.</span></div><time id="currentDate"></time></div>
+          <div id="metricGrid" class="metric-grid"></div>
+          <div class="dashboard-grid">
+            <article class="card span-2"><div class="card-head"><div><p class="eyebrow">PATIENT DISTRIBUTION</p><h3>Patients by department</h3></div><span class="pill neutral">Live data</span></div><div id="departmentChart" class="bar-chart"></div></article>
+            <article class="card"><div class="card-head"><div><p class="eyebrow">CARE PRIORITY</p><h3>Queue summary</h3></div></div><div id="priorityDonut" class="donut-wrap"></div></article>
+            <article class="card span-2"><div class="card-head"><div><p class="eyebrow">TODAY</p><h3>Upcoming appointments</h3></div><button class="text-btn" data-go="appointments">View all</button></div><div id="todayAppointments" class="compact-list"></div></article>
+            <article class="card"><div class="card-head"><div><p class="eyebrow">RESOURCES</p><h3>Current capacity</h3></div></div><div id="resourceSummary" class="progress-list"></div></article>
+          </div>
+        </section>
+
+        <section class="page" id="page-patients">
+          <div class="page-actions"><div><h2>Patient records</h2><p>Register, search and maintain complete fictional patient records.</p></div><button id="addPatientButton" class="btn primary">+ Register patient</button></div>
+          <article class="card"><div class="toolbar"><div class="search-box"><span>⌕</span><input id="patientSearch" placeholder="Search ID, name, phone or department"></div><select id="patientDepartmentFilter"><option value="">All departments</option></select><span id="patientCount" class="muted"></span></div><div class="table-wrap"><table><thead><tr><th>Patient</th><th>Contact</th><th>Department</th><th>Priority</th><th>Visit date</th><th></th></tr></thead><tbody id="patientTableBody"></tbody></table></div></article>
+        </section>
+
+        <section class="page" id="page-assessment">
+          <div class="page-actions"><div><h2>AI-assisted care assessment</h2><p>A transparent rule-based demonstration. It does not diagnose medical conditions.</p></div><span class="pill warning">Academic use only</span></div>
+          <div class="two-col">
+            <form id="assessmentForm" class="card form-card"><div class="card-head"><div><p class="eyebrow">ASSESSMENT INPUT</p><h3>Enter patient information</h3></div></div><label>Patient<select id="assessmentPatient"></select></label><label>Symptoms<textarea id="assessmentSymptoms" rows="4" placeholder="Example: chest pain, breathing difficulty" required></textarea></label><div class="form-grid"><label>Age<input id="assessmentAge" type="number" min="1" max="110" value="45"></label><label>Symptom duration<select id="assessmentDuration"><option value="today">Started today</option><option value="days">Several days</option><option value="weeks">Several weeks</option></select></label></div><label>Existing condition<select id="assessmentCondition"><option value="none">None reported</option><option value="cardiac">Heart condition</option><option value="respiratory">Respiratory condition</option><option value="diabetes">Diabetes</option><option value="other">Other</option></select></label><button class="btn primary" type="submit">Run assessment</button></form>
+            <article class="card result-card" id="assessmentResult"><div class="empty-state"><div class="empty-icon">AI</div><h3>No assessment yet</h3><p>Enter fictional patient information to see the priority, department and explanation.</p></div></article>
+          </div>
+          <div class="safety-note"><b>Responsible-use note</b><span>This demonstration uses visible rules and sample data. Actual medical decisions must always be made by qualified healthcare professionals.</span></div>
+        </section>
+
+        <section class="page" id="page-queue">
+          <div class="page-actions"><div><h2>Emergency priority queue</h2><p>Patients are ordered by risk score, then by arrival time.</p></div><button id="callNextButton" class="btn danger">Call next patient</button></div>
+          <div id="queueSummaryCards" class="mini-grid"></div>
+          <article class="card"><div class="table-wrap"><table><thead><tr><th>Position</th><th>Patient</th><th>Priority</th><th>Risk score</th><th>Waiting time</th><th>Status</th><th></th></tr></thead><tbody id="queueTableBody"></tbody></table></div></article>
+        </section>
+
+        <section class="page" id="page-doctors">
+          <div class="page-actions"><div><h2>Doctor management</h2><p>Monitor specialties, availability and current workload.</p></div><button id="addDoctorButton" class="btn primary">+ Add doctor</button></div>
+          <div class="toolbar standalone"><div class="search-box"><span>⌕</span><input id="doctorSearch" placeholder="Search doctor or specialty"></div><span id="availableDoctorCount" class="pill success"></span></div>
+          <div id="doctorGrid" class="doctor-grid"></div>
+        </section>
+
+        <section class="page" id="page-appointments">
+          <div class="page-actions"><div><h2>Appointment management</h2><p>Book appointments and prevent timing conflicts.</p></div><button id="addAppointmentButton" class="btn primary">+ Book appointment</button></div>
+          <div id="appointmentFilters" class="filter-tabs"><button class="active" data-status="all">All</button><button data-status="Scheduled">Scheduled</button><button data-status="Completed">Completed</button><button data-status="Cancelled">Cancelled</button></div>
+          <article class="card"><div class="table-wrap"><table><thead><tr><th>Date & time</th><th>Patient</th><th>Doctor</th><th>Department</th><th>Status</th><th></th></tr></thead><tbody id="appointmentTableBody"></tbody></table></div></article>
+        </section>
+
+        <section class="page" id="page-relationships">
+          <div class="page-actions"><div><h2>Patient–doctor relationship map</h2><p>Explore assignments, departments and referral paths.</p></div><select id="relationshipPatient"></select></div>
+          <div class="map-layout"><article class="card map-card"><div id="relationshipMap" class="relationship-map"></div></article><article class="card"><p class="eyebrow">SHORTEST REFERRAL PATH</p><h3 id="pathTitle">Select a patient</h3><div id="pathSteps" class="path-steps"></div><div class="divider"></div><p class="eyebrow">GRAPH DETAILS</p><dl id="graphStats" class="stats-list"></dl></article></div>
+        </section>
+
+        <section class="page" id="page-resources">
+          <div class="page-actions"><div><h2>Hospital resource allocation</h2><p>Assign limited resources while keeping emergency priority visible.</p></div><button id="optimizeResourcesButton" class="btn secondary">Run smart allocation</button></div>
+          <div id="resourceGrid" class="resource-grid"></div>
+          <article class="card"><div class="card-head"><div><p class="eyebrow">ALLOCATION LOG</p><h3>Recent assignments</h3></div></div><div id="allocationLog" class="compact-list"></div></article>
+        </section>
+
+        <section class="page" id="page-indexing">
+          <div class="page-actions"><div><h2>Scalable patient index</h2><p>Visualise a simplified B+ tree index used for fast record retrieval.</p></div><span class="pill neutral">Order 4</span></div>
+          <article class="card index-controls"><label>Patient ID<input id="indexPatientId" placeholder="Example: P1011"></label><div class="button-row"><button id="indexInsertButton" class="btn primary">Insert</button><button id="indexSearchButton" class="btn secondary">Search</button><button id="indexDeleteButton" class="btn ghost bordered">Delete</button></div><label>Range search<div class="range-inputs"><input id="rangeStart" placeholder="P1003"><span>to</span><input id="rangeEnd" placeholder="P1010"></div></label><button id="rangeSearchButton" class="btn secondary">Find range</button></article>
+          <article class="card tree-card"><div class="card-head"><div><p class="eyebrow">B+ TREE VIEW</p><h3>Patient ID index</h3></div><span id="indexStatus" class="muted">Ready</span></div><div id="bplusTree" class="bplus-tree"></div></article>
+          <div class="comparison-grid"><article class="card"><p class="eyebrow">SEQUENTIAL SEARCH</p><strong id="linearComparisons" class="big-number">—</strong><span>comparisons</span><small id="linearTime">Run a search to compare</small></article><article class="card accent-card"><p class="eyebrow">INDEXED SEARCH</p><strong id="indexedComparisons" class="big-number">—</strong><span>comparisons</span><small id="indexedTime">Run a search to compare</small></article></div>
+        </section>
+
+        <section class="page" id="page-algorithms">
+          <div class="page-actions"><div><h2>Algorithm & performance lab</h2><p>Interactive demonstrations connected to the hospital workflow.</p></div><button id="runAllDemosButton" class="btn primary">Run all demonstrations</button></div>
+          <div class="algorithm-grid">
+            <article class="card algorithm-card"><div class="algo-title"><span>AVL</span><div><h3>Patient record tree</h3><p>Balanced search by Patient ID</p></div></div><div id="avlVisual" class="mini-visual"></div><dl><div><dt>Last input</dt><dd id="avlInput">Patient IDs</dd></div><div><dt>Result</dt><dd id="avlResult">Balanced tree</dd></div><div><dt>Time</dt><dd>O(log n)</dd></div></dl><button class="btn ghost bordered algo-run" data-demo="avl">Run steps</button></article>
+            <article class="card algorithm-card"><div class="algo-title"><span>HP</span><div><h3>Emergency heap</h3><p>Highest risk is handled first</p></div></div><div id="heapVisual" class="mini-visual"></div><dl><div><dt>Last input</dt><dd id="heapInput">Risk scores</dd></div><div><dt>Result</dt><dd id="heapResult">Priority order</dd></div><div><dt>Time</dt><dd>O(log n)</dd></div></dl><button class="btn ghost bordered algo-run" data-demo="heap">Run steps</button></article>
+            <article class="card algorithm-card"><div class="algo-title"><span>GR</span><div><h3>Referral graph</h3><p>Shortest specialist pathway</p></div></div><div id="graphVisual" class="mini-visual"></div><dl><div><dt>Last input</dt><dd id="graphInput">Patient network</dd></div><div><dt>Result</dt><dd id="graphResult">Path calculated</dd></div><div><dt>Time</dt><dd>O((V+E) log V)</dd></div></dl><button class="btn ghost bordered algo-run" data-demo="graph">Run steps</button></article>
+            <article class="card algorithm-card"><div class="algo-title"><span>DP</span><div><h3>Resource optimiser</h3><p>Best benefit within capacity</p></div></div><div id="dpVisual" class="mini-visual"></div><dl><div><dt>Last input</dt><dd id="dpInput">5 requests</dd></div><div><dt>Result</dt><dd id="dpResult">Allocation ready</dd></div><div><dt>Time</dt><dd>O(n × capacity)</dd></div></dl><button class="btn ghost bordered algo-run" data-demo="dp">Run steps</button></article>
+            <article class="card algorithm-card"><div class="algo-title"><span>GC</span><div><h3>Doctor scheduling</h3><p>Conflict-free time slots</p></div></div><div id="scheduleVisual" class="mini-visual"></div><dl><div><dt>Last input</dt><dd id="scheduleInput">6 appointments</dd></div><div><dt>Result</dt><dd id="scheduleResult">3 slots assigned</dd></div><div><dt>Time</dt><dd>O(kⁿ), small demo</dd></div></dl><button class="btn ghost bordered algo-run" data-demo="schedule">Run steps</button></article>
+            <article class="card algorithm-card"><div class="algo-title"><span>B+</span><div><h3>Scalable patient index</h3><p>Fast exact and range search</p></div></div><div id="indexVisual" class="mini-visual"></div><dl><div><dt>Last input</dt><dd id="indexInput">Indexed records</dd></div><div><dt>Result</dt><dd id="indexResult">Leaf links created</dd></div><div><dt>Time</dt><dd>O(log n)</dd></div></dl><button class="btn ghost bordered algo-run" data-demo="index">Run steps</button></article>
+          </div>
+          <article class="card"><div class="card-head"><div><p class="eyebrow">COMPLEXITY SUMMARY</p><h3>Why each structure is used</h3></div></div><div class="table-wrap"><table><thead><tr><th>Hospital task</th><th>Technique</th><th>Typical time</th><th>Reason</th></tr></thead><tbody><tr><td>Find patient</td><td>B+ tree index</td><td>O(log n)</td><td>Fast exact and range retrieval</td></tr><tr><td>Emergency ordering</td><td>Binary heap</td><td>O(log n)</td><td>Highest-risk patient remains accessible</td></tr><tr><td>Referral route</td><td>Dijkstra</td><td>O((V+E) log V)</td><td>Finds a low-cost specialist path</td></tr><tr><td>Limited resources</td><td>Dynamic programming</td><td>O(nC)</td><td>Maximises care benefit within capacity</td></tr><tr><td>Timetable conflicts</td><td>Graph colouring</td><td>O(kⁿ)</td><td>Produces valid slots for a small schedule</td></tr></tbody></table></div></article>
+        </section>
+      </div>
+    </main>
+  </div>
+
+  <dialog id="patientDialog" class="modal"><form id="patientForm" method="dialog"><div class="modal-head"><div><p class="eyebrow">PATIENT RECORD</p><h2 id="patientDialogTitle">Register patient</h2></div><button class="icon-btn" value="cancel" aria-label="Close">×</button></div><input type="hidden" id="patientEditId"><div class="form-grid three"><label>Full name<input id="patientName" required></label><label>Age<input id="patientAge" type="number" min="1" max="110" required></label><label>Gender<select id="patientGender"><option>Female</option><option>Male</option><option>Other</option></select></label><label>Phone<input id="patientPhone" pattern="[0-9]{10}" placeholder="10 digits" required></label><label>Blood group<select id="patientBlood"><option>A+</option><option>A-</option><option>B+</option><option>B-</option><option>AB+</option><option>AB-</option><option>O+</option><option>O-</option></select></label><label>Visit date<input id="patientVisitDate" type="date" required></label></div><label>Address<input id="patientAddress" required></label><div class="form-grid"><label>Department<select id="patientDepartment" required></select></label><label>Priority<select id="patientPriority"><option>Low</option><option>Medium</option><option>High</option><option>Critical</option></select></label></div><label>Symptoms<textarea id="patientSymptoms" rows="3" required></textarea></label><div class="form-grid"><label>Previous conditions<input id="patientConditions" placeholder="None if not reported"></label><label>Allergies<input id="patientAllergies" placeholder="None if not reported"></label></div><div class="modal-actions"><button class="btn ghost bordered" value="cancel">Cancel</button><button class="btn primary" id="savePatientButton" value="default">Save record</button></div></form></dialog>
+
+  <dialog id="profileDialog" class="modal profile-modal"><div class="modal-head"><div><p class="eyebrow">COMPLETE PATIENT PROFILE</p><h2 id="profileTitle"></h2></div><button class="icon-btn" onclick="this.closest('dialog').close()" aria-label="Close">×</button></div><div id="profileContent"></div><div class="modal-actions"><button id="printProfileButton" class="btn secondary">Print summary</button><button class="btn primary" onclick="this.closest('dialog').close()">Done</button></div></dialog>
+
+  <dialog id="doctorDialog" class="modal"><form id="doctorForm" method="dialog"><div class="modal-head"><div><p class="eyebrow">STAFF RECORD</p><h2>Add doctor</h2></div><button class="icon-btn" value="cancel">×</button></div><div class="form-grid"><label>Doctor name<input id="doctorName" placeholder="Dr. Full Name" required></label><label>Specialization<input id="doctorSpecialty" required></label><label>Department<select id="doctorDepartment" required></select></label><label>Available timing<input id="doctorTiming" placeholder="09:00–14:00" required></label></div><div class="modal-actions"><button class="btn ghost bordered" value="cancel">Cancel</button><button class="btn primary" value="default">Save doctor</button></div></form></dialog>
+
+  <dialog id="appointmentDialog" class="modal"><form id="appointmentForm" method="dialog"><div class="modal-head"><div><p class="eyebrow">APPOINTMENT</p><h2>Book appointment</h2></div><button class="icon-btn" value="cancel">×</button></div><div class="form-grid"><label>Patient<select id="appointmentPatient" required></select></label><label>Doctor<select id="appointmentDoctor" required></select></label><label>Date<input id="appointmentDate" type="date" required></label><label>Time<input id="appointmentTime" type="time" required></label></div><p id="appointmentError" class="form-error"></p><div class="modal-actions"><button class="btn ghost bordered" value="cancel">Cancel</button><button class="btn primary" value="default">Book appointment</button></div></form></dialog>
+
+  <div id="toast" class="toast" role="status"></div>
+  <script>window.MEDIRECORD_USE_API = true;</script>
+  <script src="/static/assets/data.js"></script>
+  <script src="/static/assets/app.js"></script>
+</body>
+</html>
